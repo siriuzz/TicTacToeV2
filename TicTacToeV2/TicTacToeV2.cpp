@@ -9,8 +9,8 @@
 #include <algorithm>
 using namespace std;
 
-char humano, ia;
-int contJugadas = 0, tableroSize;
+char tablero[9], humano, ia;
+int contJugadas = 0, tableroSize = sizeof(tablero) / sizeof(tablero[0]);
 
 
 bool Victory(char tablero[], char playedChar) {
@@ -111,7 +111,7 @@ void GenDiv(int n) {
 	cout << '+' << endl;
 }
 
-void Display(char tablero[]) {
+void Display() {
 	int size = sizeof(tablero) / sizeof(tablero[0]);
 	size = size / sqrt(size);
 	int rowCount = 0;
@@ -133,7 +133,7 @@ void Display(char tablero[]) {
 	}
 }
 
-bool Jugada(char playedChar, int position, char tablero[]) {
+bool Jugada(char playedChar, int position) {
 	if (tablero[position - 1] == ' ') {
 		tablero[position - 1] = playedChar;
 		contJugadas++;
@@ -146,9 +146,7 @@ bool Jugada(char playedChar, int position, char tablero[]) {
 
 int main()
 {
-	char tablero[9] = { ' ',' ',' ',' ',' ',' ',' ',' ',' ' };
-
-	tableroSize = sizeof(tablero) / sizeof(tablero[0]);
+	memset(tablero, ' ', sizeof(tablero));
 
 	humano = 'O';
 	ia = 'X';
@@ -166,23 +164,23 @@ int main()
 		cout << "Inserte su jugada, humano: ";
 		cin >> jugada;
 
-		if (!Jugada(humano, stoi(jugada), tablero)) {
+		if (!Jugada(humano, stoi(jugada))) {
 			cout << "Jugada invalida, intente de nuevo\n";
 			continue;
 		}
 		if (Victory(tablero,stoi(jugada))) break;
-		Display(tablero);
+		Display();
 
 
 		int jugadaIA = EncontrarMejorPosicion(tablero);
 
-		if (!Jugada(ia, jugadaIA, tablero)) {
+		if (!Jugada(ia, jugadaIA)) {
 			cout << "Jugada invalida, intente de nuevo\n";
 			continue;
 		}
 		if (Victory(tablero,jugadaIA)) break;
 
-		Display(tablero);
+		Display();
 
 	}
 }
